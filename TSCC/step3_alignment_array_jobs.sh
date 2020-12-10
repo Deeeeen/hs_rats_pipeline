@@ -1,34 +1,35 @@
 #!/bin/bash
-#PBS -q hotel
-#PBS -N hs_rats_map_rn7
-#PBS -l nodes=tscc-4-3:ppn=5
-#PBS -l walltime=16:00:00
-#PBS -t 1-24
+#PBS -q condo
+#PBS -N mapping
+#PBS -l nodes=1:ppn=6
+#PBS -l walltime=8:00:00
+#PBS -t 1-24%5
 #PBS -V
 #PBS -j oe
 #PBS -k oe
 #PBS -M dec037@health.ucsd.edu
-#PBS -m abe
+#PBS -m ae
 
-cd /home/dec037
 #### Make sure to change the compute node, job name, num of node,
 #### ppn, walltime, forward email address for notifications. (above)
-dir_path=/projects/ps-palmer/hs_rats/20200831/tscc-4-1
+#### !!!!!!!!!!!!!!!!!!!!!!
+#### Number of array jobs needs modifications.
+#### Here we have 24 array jobs
+#### !!!!!!!!!!!!!!!!!!!!!!
 
+pipeline_arguments=pipeline_arguments
+home=$(head -n 1 ${pipeline_arguments})
+dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
+reference_data=$(head -n 5 ${pipeline_arguments} | tail -n 1)
+sample_sheet=${dir_path}/demux/sample_barcode_lib.csv
 demux_data=${dir_path}/demux/fastq
-#### where you keep .fastq sequence data
-reference_data=/projects/ps-palmer/hs_rats/20200810/data/mRatNor1_1.curated_primary.20200520.fa
-#### .fna reference genome
-sample_barcode_lib=${dir_path}/demux/sample_barcode_lib.csv
-#### .csv sample barcode metadata
-out_path=${dir_path}/rn7
-#### all the output goes to this directory
+#### read in arguments for the pipeline
+
+cd ${home}
 
 ################# Map sequence reads against reference genome #################
-#### Map to reference
 START=$(date +%s)
-ncpu=4
-
+#### find all demuxed fastq.gz files and construct a list of their prefix
 fastq_prefix=()
 fastq_fs=$(find ${demux_data}/*.fastq.gz ! -name '*unmatched*')
 cnt=0
@@ -40,12 +41,15 @@ do
 done
 fastq_prefix=$(for f in ${fastq_prefix[@]}; do echo $f; done | sort -u)
 
+#### organize a group of fastq.gz files for this array job to process
+#### !!!!!!!!!!!!!!!!!!!!!!
+#### May need to change the number 24 based on the number of array jobs requested
+#### !!!!!!!!!!!!!!!!!!!!!!
 num_fastq=0
-for f in ${fastq_prefix}
+for f in ${fastq_prefix}; 
 do 
   (( num_fastq += 1))
 done
-
 ((temp=num_fastq/24+1,num_fastq_temp=temp*PBS_ARRAYID))
 if [[ ${num_fastq_temp} -gt ${num_fastq} ]]; then
   ((temp=temp-(num_fastq_temp-num_fastq)))
@@ -57,6 +61,8 @@ else
   fastq_temp=$(echo "${fastq_prefix}" | head -$num_fastq_temp | tail -$temp)
 fi
 
+#### a customized command to extract the header of the fastq.gz file
+#### this to gather the register group info that bwa mem needs
 zhead_py=$(cat <<'EOF'
 import sys, gzip
 gzf = gzip.GzipFile(sys.argv[1], 'rb')
@@ -72,6 +78,12 @@ EOF
 )
 zhead() { python -c "$zhead_py" "$@"; }
 
+
+ncpu=3
+#### !!!!!!!!!!!!!!!!!!!!!!
+#### May need to change the ncpu based on the ppn requested
+#### the -t flag on bwa mem command specifies the number of threads
+#### !!!!!!!!!!!!!!!!!!!!!!
 cnt=0
 for f in ${fastq_temp}
 do
@@ -80,6 +92,7 @@ do
    done
    sleep 5
    (( cnt += 1 ))
+   #### construct the register group for bwa
    fastq_header=$(zhead ${demux_data}/${f}_R1.fastq.gz 1)
    instrument_name=$(cut -d ':' -f 1 <<< $fastq_header | cut -d '@' -f 2)
    run_id=$(cut -d ':' -f 2 <<< $fastq_header)
@@ -88,14 +101,13 @@ do
    sample_id=$(cut -d '-' -f 1 <<< $f)
    library_id=$(grep -w "^${sample_id}" $sample_barcode_lib | cut -d ',' -f 5)
    sample_barcode=$(cut -d '-' -f 3 <<< $f)
-   echo -e "\n-----run ${cnt}-th file: ${demux_data}/${f} > ${dir_path}/sams/${f}.sam-----"
+   RG="@RG\tID:${instrument_name}.${run_id}.${flowcell_id}.${flowcell_lane}\tLB:${library_id}\tPL:ILLUMINA\tSM:${sample_id}\tPU:${flowcell_id}.${flowcell_lane}.${sample_barcode}"
 
-   #### automaticallly handle this in the future
-   #### is this the latest bwa version?
+   echo -e "\n-----run ${cnt}-th file: ${demux_data}/${f} > ${dir_path}/sams/${f}.sam-----"
    /projects/ps-palmer/software/local/src/bwa-0.7.12/bwa mem -aM -t 2\
-     -R "@RG\tID:${instrument_name}.${run_id}.${flowcell_id}.${flowcell_lane}\tLB:${library_id}\tPL:ILLUMINA\tSM:${sample_id}\tPU:${flowcell_id}.${flowcell_lane}.${sample_barcode}" \
+     -R ${RG} \
      ${reference_data} ${demux_data}/${f}_R1.fastq.gz \
-     ${demux_data}/${f}_R2.fastq.gz > ${out_path}/sams/${f}.sam &
+     ${demux_data}/${f}_R2.fastq.gz > ${dir_path}/sams/${f}.sam &
 done
 
 while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
