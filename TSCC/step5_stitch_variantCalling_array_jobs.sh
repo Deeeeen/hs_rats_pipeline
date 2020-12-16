@@ -14,12 +14,14 @@
 #### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=pipeline_arguments
+previous_flow_cells_bams=previous_flow_cells_bams
+
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 reference_panels=$(head -n 6 ${pipeline_arguments} | tail -n 1)
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 bams_data=${dir_path}/bams
-more_bam=$(awk "{if (NR > 9) print;}" ${pipeline_arguments})
+more_bam=$(awk "{print;}" ${previous_flow_cells_bams})
 #### read in arguments for the pipeline
 
 cd ${home}
@@ -34,7 +36,6 @@ Rscript ${code}/variant_calling_STITCH.r \
     ${reference_panels} \
     ${bams_data} \
     ${more_bam}
-
 
 while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
    sleep 60

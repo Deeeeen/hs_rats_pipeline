@@ -19,7 +19,15 @@ Line 6: Reference panels for STITCH
 Line 7: Genetic map for BEAGLE  
 Line 8: Directory where you keep the code for the pipeline  
 Line 9: The general name of this run  
-Line 10 to EOF: The directory of previous runs' bam files  
+
+**[previous_flow_cells_metadata](previous_flow_cells_metadata)**  
+Paths to previous flow cells' metadata.  
+
+**[previous_flow_cells_bams](previous_flow_cells_bams)**  
+Paths to previous flow cells' BAM files.
+
+**[pedigree_data](pedigree_data)**  
+Paths to all flow cells' pedigree data. 
 
 **[step1_prep.sh](step1_prep.sh)**  
 Preparation for the pipeline, which constructs the basic structure of the directory and splits the sample sheet for Fgbio demultiplex based on each Riptide library preparation.
@@ -64,8 +72,6 @@ Make plots for genotype results
 5. HWE vs. MAF heatmap
 
 **TO-DO**  
-- [ ] Mapping coverage histogram/boxplot
-- [ ] Combine metadata for all flowcells called on Variant Calling
 - [ ] Output log file
 - [ ] PCA plots
 - [ ] Missing rate vs. # of reads

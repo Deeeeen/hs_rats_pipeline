@@ -13,6 +13,9 @@
 #### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=pipeline_arguments
+previous_flow_cells_metadata=previous_flow_cells_metadata
+pedigree_data=pedigree_data
+
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
@@ -29,11 +32,20 @@ cd ${home}
 mkdir ${genotype_result}
 
 ####!!!!!!!!!!!!!!!!!!
-####TO-DO: code to output log file, code to combine all metadata 
+####TO-DO: code to output log file
 ####       code to plot PCA, code to plot het vs missing,
 ####       code to plot mssing vs number of reads, code for coat color QC
 ####       code for pairwise concordance 
 ####!!!!!!!!!!!!!!!!!!
+################ Output log file, and combine all metadata ####################
+source activate hs_rats
+Rscript ${code}/combine_csv.r \
+  ${vcf_prefix}_${current_date} \
+  ${original_sample_sheet} \
+  ${previous_flow_cells_metadata} \
+  ${pedigree_data} \
+  ${out_path}
+conda deactivate
 
 ##################### genotypes results after STITCH ##########################
 mkdir ${genotype_result}/stitch_result
