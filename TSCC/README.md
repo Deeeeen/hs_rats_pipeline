@@ -6,7 +6,7 @@
 :two: All the software installed on TSCC are [here](https://aapalmer-lab.slack.com/files/T0JULRU14/FPS2923NU). To change the software version used on this pipeline, you may need to do it manually. (Only the software for the pipeline main structure are listed. Software used on the result analysis part are NOT listed on this Github.)  
 
 **[HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf](HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf)**  
-Pipeline structure and documentation.  
+Graphic explanation for the pipeline structure and documentation.  
 
 **[pipeline_arguments](pipeline_arguments)**  
 Pipeline arguments.  
@@ -66,15 +66,16 @@ Make plots for alignment results
 **[result3_genotypeResult.sh](result3_genotypeResult.sh)**  
 Make plots for genotype results  
 1. Histogram for STITCH info score
-2. SNPs stats and density plot after BEAGLE
-3. MAF histogram
-4. HWE histogram
-5. HWE vs. MAF heatmap
+2. Heterozygosity rate vs. missing rate after STITCH
+3. SNPs stats and density plot after BEAGLE
+4. MAF histogram after BEAGLE
+5. HWE histogram after BEAGLE
+6. HWE vs. MAF heatmap after BEAGLE
+7. PCA plots after BEAGLE
+8. Albino coat color QC based on SNP 1:151097606
+9. Pairwise concordance check
 
 **TO-DO**  
 - [ ] Output log file
-- [ ] PCA plots
 - [ ] Missing rate vs. # of reads
-- [ ] Heterozygosity rate vs. missing rate
-- [ ] Coat color QC
-- [ ] Pairwise concordance
+- [ ] Brown coat color QC
