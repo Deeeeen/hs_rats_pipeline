@@ -8,6 +8,7 @@ Github: https://github.com/Deeeeen/hs_rats_pipeline/tree/master/Docker/hs_rats_g
 Docker Hub: https://hub.docker.com/r/deeeeen/hs_rats_pipeline_step1  
 
 ## Documentation
+### Run Docker image on your local PC:
 1. Install [Docker](https://docs.docker.com/get-docker/).
 2. Make sure Docker is running with running the following code on terminal.
 ```
@@ -24,6 +25,12 @@ docker images
 5. Run docker image. Here we use shared volumes ```-v``` flag to transfer data from host machine to Docker. Please specify a directory on your host machine here: ```<host directory>``` and specify the docker image ID you got on step 4 here: ```<IMAGE ID>```.   
 ```
 docker run -v "<host directory>:/hs_genotyping_step1/data" <IMAGE ID>
+```
+
+### Run Docker image on TSCC (PBS):
+1. Download the docker image from Docker Hub.
+```
+singularity pull docker://deeeeen/hs_rats_pipeline_step1:latest
 ```
 
 ## Requirements
