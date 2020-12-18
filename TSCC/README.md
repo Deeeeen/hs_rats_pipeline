@@ -5,6 +5,7 @@
 :one: For the .sh files (PBS job submission files)), you may want to change the PBS job submission configurations on the top of the file based on your needs.  
 :two: All the software installed on TSCC are [here](https://aapalmer-lab.slack.com/files/T0JULRU14/FPS2923NU). To change the software version used on this pipeline, you may need to do it manually. (Only the software for the pipeline main structure are listed. Software used on the result analysis part are NOT listed on this Github.)  
 
+## Contents
 **[HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf](HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf)**  
 Graphic explanation for the pipeline structure and documentation.  
 
