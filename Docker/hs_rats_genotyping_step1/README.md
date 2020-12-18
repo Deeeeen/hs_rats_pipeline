@@ -28,4 +28,4 @@ docker run -v "<host directory>:/hs_genotyping_step1/data" <IMAGE ID>
 
 ## Requirements
 1. ```<host directory>``` must have ```pipeline_arguments``` and sample sheet for Fgbio.
-2. ```pipeline_arguments``` must have first 2 required lines. Please refer to [here](Docker/README.md) for required details on ```pipeline_arguments```.
+2. ```pipeline_arguments``` must have first 2 required lines. Please refer to [here](https://github.com/Deeeeen/hs_rats_pipeline/blob/master/Docker/README.md) for required details on ```pipeline_arguments```.
