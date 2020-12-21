@@ -32,6 +32,10 @@ docker run -v "<host directory>:/hs_genotyping_step1/data" <IMAGE ID>
 ```
 singularity pull docker://deeeeen/hs_rats_pipeline_step1:latest
 ```
+2. Run docker image. Here we use shared volumes ```-B``` flag to transfer data from host machine to Docker. Please specify a directory on your host machine here: ```<host directory>``` and specify the path to the docker image you got on step 1 here: ```<hs_rats_pipeline_step1_latest.sif>```.   
+```
+singularity run -B <host directory>:/hs_genotyping_step1/data <hs_rats_pipeline_step1_latest.sif> 
+```
 
 ## Requirements
 1. ```<host directory>``` must have ```pipeline_arguments``` and sample sheet for Fgbio.
