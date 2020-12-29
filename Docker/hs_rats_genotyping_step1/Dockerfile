@@ -24,7 +24,7 @@ RUN mkdir /hs_genotyping_step1/code /hs_genotyping_step1/data
 COPY ./code /hs_genotyping_step1/code
 
 # Change permission in order to run the bash script
-RUN chmod 777 /hs_genotyping_step1/code/step1_prep.sh
+RUN chmod u+x /hs_genotyping_step1/code/step1_prep.sh
 
 # Set working directory
 WORKDIR /hs_genotyping_step1
