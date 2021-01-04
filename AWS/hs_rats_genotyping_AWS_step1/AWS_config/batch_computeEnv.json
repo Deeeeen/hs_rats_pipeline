@@ -10,18 +10,15 @@
             "c4.large"
         ],
         "subnets": [
-            "subnet-dac01cb1",
-            "subnet-443d4008",
-            "subnet-c0d4deba"
+            "subnet-XXX"
         ],
         "securityGroupIds": [
-            "sg-f0b09b8f"
+            "sg-XXX"
         ],
-        "ec2KeyPair": "dec037",
-        "instanceRole": "arn:aws:iam::371546222773:instance-profile/ecsInstanceRole",
+        "instanceRole": "arn:aws:iam::XXX:instance-profile/ecsInstanceRole",
         "tags": {
             "Name": "C4OnDemand"
         }
     },
-    "serviceRole": "arn:aws:iam::371546222773:role/AWSBatchServiceRole"
+    "serviceRole": "arn:aws:iam::XXX:role/AWSBatchServiceRole"
 }

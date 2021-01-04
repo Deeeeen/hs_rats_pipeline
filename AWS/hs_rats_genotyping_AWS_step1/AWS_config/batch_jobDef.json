@@ -10,9 +10,9 @@
         "ulimits": [] ,
         "command": ["/hs_genotyping_step1/code/run_code.sh"],
         "environment" : [
-            {"name" : "BATCH_FILE_S3_URL", "value" : "s3://hs-rats-pipeline/data"}
+            {"name" : "BATCH_FILE_S3_URL", "value" : "s3://XXX"}
         ],
-        "jobRoleArn" : "arn:aws:iam::371546222773:role/hs_rats_genotyping"
+        "jobRoleArn" : "arn:aws:iam::XXX:role/hs_rats_genotyping"
     },
     "retryStrategy": {
         "attempts": 1
