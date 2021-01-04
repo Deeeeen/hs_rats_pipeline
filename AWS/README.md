@@ -1,6 +1,7 @@
 ![alt text](https://secureservercdn.net/198.71.233.106/h9j.d46.myftpupload.com/wp-content/uploads/2019/09/palmerlab-logo.png)
 # AWS
 ## Source code for HS rats pipeline on [AWS](https://hub.docker.com/u/deeeeen)  
+The Docker images in this directory utilize AWS Batch and AWS S3 to run the HS rats genotyping pipeline. Please have your AWS account set up before proceeding. 
 
 ## Links
 Github: https://github.com/Deeeeen/hs_rats_pipeline/tree/master/AWS  

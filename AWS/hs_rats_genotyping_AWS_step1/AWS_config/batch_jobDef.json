@@ -1,0 +1,23 @@
+{
+    "jobDefinitionName": "hs_rats_genotyping_aws_step1",
+    "type": "container",
+    "containerProperties": {
+        "image": "deeeeen/hs_rats_genotyping_aws_step1:latest",
+        "vcpus": 1,
+        "memory": 1024,
+        "volumes": [],
+        "mountPoints": [],
+        "ulimits": [] ,
+        "command": ["/hs_genotyping_step1/code/run_code.sh"],
+        "environment" : [
+            {"name" : "BATCH_FILE_S3_URL", "value" : "s3://hs-rats-pipeline/data"}
+        ],
+        "jobRoleArn" : "arn:aws:iam::371546222773:role/hs_rats_genotyping"
+    },
+    "retryStrategy": {
+        "attempts": 1
+    },
+    "timeout": {
+        "attemptDurationSeconds": 60
+    }
+} 

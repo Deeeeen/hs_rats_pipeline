@@ -1,0 +1,11 @@
+{
+    "jobQueueName": "hs_rats_genotyping_aws_step1",
+    "state": "ENABLED",
+    "priority": 100,
+    "computeEnvironmentOrder": [
+      {
+        "order": 1,
+        "computeEnvironment": "C4OnDemand_hs_rats_genotyping_aws_step1"
+      }
+    ]
+  }
