@@ -4,5 +4,6 @@
 This [Github repository](https://github.com/Deeeeen/hs_rats_pipeline) is to document Palmer Lab's Heterogeneous Stock Rats Genotyping Pipeline.
 
 ## Contents
-- **[TSCC](TSCC)**: This folder contains the complete pipeline code that utilizes TSCC's PBS scheduler's array jobs feature to achieve parallelization.
+- **[AWS](AWS)** (under development): This folder contains Docker images and AWS configuration files for the pipeline. Docker images are separated by pipeline steps.
 - **[Docker](Docker)** (under development): This folder contains Docker images for the pipeline. Docker images are separated by pipeline steps.
+- **[TSCC](TSCC)**: This folder contains the complete pipeline code that utilizes TSCC's PBS scheduler's array jobs feature to achieve parallelization.
