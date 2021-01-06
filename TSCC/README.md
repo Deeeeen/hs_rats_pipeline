@@ -82,7 +82,8 @@ Please update the following files to suit your purpose:
 2. [previous_flow_cells_metadata](previous_flow_cells_metadata)
 3. [previous_flow_cells_bams](previous_flow_cells_bams)
 4. [pedigree_data](pedigree_data)
-5. Change the header of the .sh files (PBS job submission configurations) based on your needs.
+5. (Optional) Change the header of the .sh files (PBS job submission configurations) based on your needs.
+6. (Optional) You can change the ```java``` in step2, step4 and step6 .sh scripts to ```/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64/bin/java```. Some nodes on TSCC don't have java installed.
 
 ### Run the pipeline on TSCC:
 1. Change the permission of the submission script
