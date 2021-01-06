@@ -2,8 +2,7 @@
 # TSCC
 ## Source code for HS rats pipeline on [TSCC](https://www.sdsc.edu/support/user_guides/tscc.html)
 :information_source: :information_source: :information_source:  **INFOMATION** :information_source: :information_source: :information_source:  
-:one: For the .sh files (PBS job submission files)), you may want to change the PBS job submission configurations on the top of the file based on your needs.  
-:two: All the software installed on TSCC are [here](https://aapalmer-lab.slack.com/files/T0JULRU14/FPS2923NU). To change the software version used on this pipeline, you may need to do it manually. (Only the software for the pipeline main structure are listed. Software used on the result analysis part are NOT listed on this Github.)  
+All the software installed on TSCC are [here](https://aapalmer-lab.slack.com/files/T0JULRU14/FPS2923NU). To change the software version used on this pipeline, you may need to do it manually. (Only the software for the pipeline main structure are listed. Software used on the result analysis part are NOT listed on this Github.)  
 
 ## Contents
 **[HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf](HS_Rats_Genotyping_Pipeline_Summary_Report_20201015.pdf)**  
@@ -76,6 +75,24 @@ Make plots for genotype results
 8. Albino coat color QC based on SNP 1:151097606
 9. Pairwise concordance check
 
+## Documentation
+### Before running the pipeline on TSCC:
+Please update the following files to suit your purpose:  
+1. [pipeline_arguments](pipeline_arguments)
+2. [previous_flow_cells_metadata](previous_flow_cells_metadata)
+3. [previous_flow_cells_bams](previous_flow_cells_bams)
+4. [pedigree_data](pedigree_data)
+5. Change the header of the .sh files (PBS job submission configurations) based on your needs.
+
+### Run the pipeline on TSCC:
+1. Change the permission of the submission script
+```
+chmod u+x submission.sh
+```
+2. Run the submission script
+```
+./submission.sh
+```  
 **TO-DO**  
 - [ ] Output log file
 - [ ] Missing rate vs. # of reads
