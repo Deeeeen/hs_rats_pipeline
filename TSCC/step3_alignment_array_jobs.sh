@@ -85,13 +85,13 @@ do
   flowcell_id=$(cut -d ':' -f 3 <<< $fastq_header)
   flowcell_lane=$(cut -d ':' -f 4 <<< $fastq_header)
   library_id=$(grep -w "^${sample}" $sample_sheet | cut -d ',' -f 3)
-  sample_barcode=$(cut -d '-' -f 3 <<< $f)
+  sample_barcode=$(cut -d '-' -f 3 <<< $fastq_prefix)
 
-  echo -e "\n-----run ${cnt}-th file: ${demux_data}/${f} > ${dir_path}/sams/${f}.sam-----"
+  echo -e "\n-----run ${cnt}-th file: ${demux_data}/${fastq_prefix} > ${dir_path}/sams/${fastq_prefix}.sam-----"
   /projects/ps-palmer/software/local/src/bwa-0.7.12/bwa mem -aM -t 2\
   -R "@RG\tID:${instrument_name}.${run_id}.${flowcell_id}.${flowcell_lane}\tLB:${library_id}\tPL:ILLUMINA\tSM:${sample}\tPU:${flowcell_id}.${flowcell_lane}.${sample_barcode}" \
-  ${reference_data} ${demux_data}/${f}_R1.fastq.gz \
-  ${demux_data}/${f}_R2.fastq.gz > ${dir_path}/sams/${f}.sam &
+  ${reference_data} ${demux_data}/${fastq_prefix}_R1.fastq.gz \
+  ${demux_data}/${fastq_prefix}_R2.fastq.gz > ${dir_path}/sams/${fastq_prefix}.sam &
 done
 
 while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
