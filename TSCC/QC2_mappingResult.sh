@@ -169,6 +169,7 @@ do
   echo "create file: ${mapping_result}/mapped_GC_${chr}"
   touch ${mapping_result}/mapped_GC_${chr}
 done
+
 ncpu=6
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested

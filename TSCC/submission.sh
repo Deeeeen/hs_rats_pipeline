@@ -26,3 +26,13 @@ STEP5_STITCH_JOB_ARR_id=$(echo "${STEP5_STITCH_JOB_ARR}" | cut -d '.' -f 1 )
 STEP6_BEAGLE_JOB_ARR=$(qsub -W depend=afterokarray:${STEP5_STITCH_JOB_ARR_id} ${code}/step6_beagle_imputation_array_jobs.sh)
 echo "step6_beagle: $STEP6_BEAGLE_JOB_ARR"
 STEP6_BEAGLE_JOB_ARR_id=$(echo "${STEP6_BEAGLE_JOB_ARR}" | cut -d '.' -f 1 )
+
+
+QC1_MULTIQC_JOB=$(qsub -W depend=afterokarray:${STEP4_MKDUP_JOB_ARR_id} ${code}/QC1_multiqc_array_jobs.sh)
+echo "QC1_multiQC: $QC1_MULTIQC_JOB"
+
+QC2_MAPPINGRESULT_JOB=$(qsub -W depend=afterokarray:${STEP4_MKDUP_JOB_ARR_id} ${code}/QC2_mappingResult.sh)
+echo "QC2_mapping_results: $QC2_MAPPINGRESULT_JOB"
+
+QC3_GENOTYPERESULT_JOB=$(qsub -W depend=afterokarray:${STEP6_BEAGLE_JOB_ARR_id} ${code}/QC3_genotypeResult.sh)
+echo "QC3_genotype_results: $QC3_GENOTYPERESULT_JOB"

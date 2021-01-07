@@ -47,10 +47,10 @@ Use array jobs feature on TSCC PBS to <ins>do variant calling ([STITCH 1.6.3](ht
 **[step6_beagle_imputation_array_jobs.sh](step6_beagle_imputation_array_jobs.sh)**  
 Use array jobs feature on TSCC PBS to <ins>do imputation ([BEAGLE 4.1](https://faculty.washington.edu/browning/beagle/b4_1.html))</ins> in parallel. 
 
-**[result1_multiqc_array_jobs.sh](result1_multiqc_array_jobs.sh)**  
+**[QC1_multiqc_array_jobs.sh](QC1_multiqc_array_jobs.sh)**  
 Run FastQC on fastq files and run Qualimap on marked-duplicates BAM files, and run MultiQC on the results of FastQC, Qualimap and Picard DuplicationMetrics. Resutls are separated by Riptide library preparation.
 
-**[result2_mappingResult.sh](result2_mappingResult.sh)**  
+**[QC2_mappingResult.sh](QC2_mappingResult.sh)**  
 Make plots for demultiplex results
 1. Boxplot and scatter plot for number of matched reads for each library
 2. Boxplot for % of unmatched reads  
@@ -63,7 +63,7 @@ Make plots for alignment results
 5. Boxplot for mapped reads on each chromosome
 6. Boxplot for GC content of mapped reads on each chromosome  
 
-**[result3_genotypeResult.sh](result3_genotypeResult.sh)**  
+**[QC3_genotypeResult.sh](QC3_genotypeResult.sh)**  
 Make plots for genotype results  
 1. Histogram for STITCH info score
 2. Heterozygosity rate vs. missing rate after STITCH

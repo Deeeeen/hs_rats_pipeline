@@ -29,7 +29,7 @@ cd ${home}
 
 sample_sheet=$(ls ${dir_path}/demux/SampleSheet_*.csv | head -n ${PBS_ARRAYID} | tail -n 1)
 samples=$(awk -F',' 'NR>1 {print $1}' ${sample_sheet})
-library=$(echo $sample_sheet | rev | cut -d '/' -f1 | rev | cut -d '_' -f3)
+library=$(echo ${sample_sheet} | rev | cut -d '/' -f1 | rev | cut -d '_' -f3)
 out_path=${dir_path}/qc/${library}
 #### choose a library preparation to process
 
