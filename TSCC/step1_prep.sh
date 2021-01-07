@@ -12,7 +12,7 @@
 #### Make sure to change the compute node, job name, num of node,
 #### ppn, walltime, forward email address for notifications. (above)
 
-pipeline_arguments=pipeline_arguments
+pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 original_sample_sheet=$(head -n 3 ${pipeline_arguments} | tail -n 1)

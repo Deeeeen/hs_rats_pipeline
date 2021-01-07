@@ -12,7 +12,7 @@
 #### Make sure to change the compute node, job name, num of node,
 #### ppn, walltime, forward email address for notifications. (above)
 
-pipeline_arguments=pipeline_arguments
+pipeline_arguments=$ARG
 previous_flow_cells_metadata=previous_flow_cells_metadata
 pedigree_data=pedigree_data
 

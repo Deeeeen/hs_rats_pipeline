@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -q condo
+#PBS -q home
 #PBS -N markDup
 #PBS -l nodes=1:ppn=12
-#PBS -l walltime=8:00:00
+#PBS -l walltime=24:00:00
 #PBS -t 1-24%5
 #PBS -V
 #PBS -j oe
@@ -17,7 +17,7 @@
 #### Here we have 24 array jobs
 #### !!!!!!!!!!!!!!!!!!!!!!
 
-pipeline_arguments=pipeline_arguments
+pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 reference_data=$(head -n 5 ${pipeline_arguments} | tail -n 1)

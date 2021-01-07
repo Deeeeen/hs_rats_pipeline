@@ -18,7 +18,7 @@
 #### contains 5 different library preparation.
 #### !!!!!!!!!!!!!!!!!!!!!!
 
-pipeline_arguments=pipeline_arguments
+pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 fastq_dir=$(head -n 4 ${pipeline_arguments} | tail -n 1)
