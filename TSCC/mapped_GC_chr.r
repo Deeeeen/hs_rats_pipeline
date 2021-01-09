@@ -30,9 +30,9 @@ metadata2$chr <- metadata2$variable
 ggplot(metadata2) +
     geom_boxplot(aes(x=chr, y=value, color=library_name))+
     ylab("GC content")
-ggsave(paste0(out_path, "/mapped_GC_chrs_lib_reads_box.png"))
+ggsave(paste0(out_path, "/mapped_GC_chrs_lib_reads_box.png"), width = 12, height = 5, dpi = 300, units = "in")
 
 ggplot(metadata2) +
     geom_boxplot(aes(x=library_name, y=value, color=chr))+
     ylab("GC content")
-ggsave(paste0(out_path, "/mapped_GC_lib_chrs_reads_box.png"))
+ggsave(paste0(out_path, "/mapped_GC_lib_chrs_reads_box.png"), width = 12, height = 5, dpi = 300, units = "in")

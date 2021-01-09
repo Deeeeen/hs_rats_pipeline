@@ -31,7 +31,7 @@ ggplot(metadata, aes(x=library_name, y=templates)) +
     geom_text(data=means, aes(label=comma(templates), y=templates+0.25), size=3) +
     ylab("# of reads (million)")+
     theme(text=element_text(size=8), axis.text.x=element_text(angle=-45, size=8))
-ggsave(paste0(args[3], "/demux_matched_reads_boxplot.png"))
+ggsave(paste0(args[3], "/demux_matched_reads_boxplot.png"), width = 5, height = 5, dpi = 300, units = "in")
 
 #### box plot for % of unmatched reads per fastq file
 ggplot(unmatched, aes(x="", y=templates)) +
@@ -41,12 +41,12 @@ ggplot(unmatched, aes(x="", y=templates)) +
     scale_y_continuous(labels=scales::percent_format(accuracy=0.1))+
     xlab("hs rats") +
     ylab("demux unmatched")
-ggsave(paste0(args[3], "/demux_unmatched_reads_boxplot.png"))
+ggsave(paste0(args[3], "/demux_unmatched_reads_boxplot.png"), width = 5, height = 5, dpi = 300, units = "in")
 
 #### scatter plot for # of reads per sample scatter plot
 ggplot(metadata,aes(x=index,y=templates,shape=runid,color=library_name)) +
     geom_point(size=2) +
     xlab("Samples") +
     ylab("# of reads (million)") #+ theme(legend.position="none")
-ggsave(paste0(args[3], "/demux_unmatched_reads_scatterplot.png"))
+ggsave(paste0(args[3], "/demux_matched_reads_scatterplot.png"), width = 7, height = 5, dpi = 300, units = "in")
 
