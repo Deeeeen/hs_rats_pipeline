@@ -3,7 +3,7 @@
 pipeline_arguments=pipeline_arguments
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 
-#### submit job array
+#### Genotyping pipeline
 STEP1_PREP_JOB=$(qsub -v ARG="$pipeline_arguments" ${code}/step1_prep.sh)
 echo "step1_prep: $STEP1_PREP_JOB"
 
@@ -27,7 +27,7 @@ STEP6_BEAGLE_JOB_ARR=$(qsub -v ARG="$pipeline_arguments" -W depend=afterokarray:
 echo "step6_beagle: $STEP6_BEAGLE_JOB_ARR"
 STEP6_BEAGLE_JOB_ARR_id=$(echo "${STEP6_BEAGLE_JOB_ARR}" | cut -d '.' -f 1 )
 
-
+#### QC pipeline
 QC1_MULTIQC_JOB=$(qsub -v ARG="$pipeline_arguments" -W depend=afterokarray:${STEP4_MKDUP_JOB_ARR_id} ${code}/QC1_multiqc_array_jobs.sh)
 echo "QC1_multiQC: $QC1_MULTIQC_JOB"
 
