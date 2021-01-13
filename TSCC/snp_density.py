@@ -106,6 +106,6 @@ if __name__=="__main__":
 	countSNPS(data, bins, binsize)
 	print("PLOT EACH CHR")
 	for i in data.keys():
-		snps_his(bins[i], i, binsize, outfile+"_"+i+".pdf")
+		snps_his(bins[i], i, binsize, outfile+"_"+i+".png")
 	print("PLOT OVERALL")
-	snps_all(bins, binsize, outfile+".pdf")
+	snps_all(bins, binsize, outfile+".png")

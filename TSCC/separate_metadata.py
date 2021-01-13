@@ -11,7 +11,7 @@ for col in metadata_cols:
 		import_cols['Sample_Name'] = col
 		continue
 	elif 'library_name' == col.lower():
-		import_cols['Libaray_ID'] = col
+		import_cols['Library_ID'] = col
 		continue
 	elif 'project_name' == col.lower():
 		import_cols['Sample_Project'] = col
@@ -25,7 +25,7 @@ for col in metadata_cols:
 	elif 'fastq_files' == col.lower():
 		import_cols['Fastq_Files'] = col
 		continue
-for new_col in ['Fastq_Files', 'Sample_Barcode', 'Sample_Project', 'Libaray_ID', 'Sample_Name', 'Sample_ID']:
+for new_col in ['Fastq_Files', 'Sample_Barcode', 'Sample_Project', 'Library_ID', 'Sample_Name', 'Sample_ID']:
 	if new_col not in import_cols.keys():
 		origial_metadata.insert(0, new_col, '')
 		print("ERROR: " + new_col + " doesn't exist")
@@ -33,8 +33,8 @@ for new_col in ['Fastq_Files', 'Sample_Barcode', 'Sample_Project', 'Libaray_ID',
 		origial_metadata.insert(0, new_col, origial_metadata[import_cols[new_col]])
 origial_metadata.to_csv(sys.argv[2]+"/sample_sheet.csv", index=False, sep=',')
 
-for unique in origial_metadata['Libaray_ID'].unique():
-	temp_metadata = origial_metadata[origial_metadata['Libaray_ID'] == unique].reset_index(drop=True)
+for unique in origial_metadata['Library_ID'].unique():
+	temp_metadata = origial_metadata[origial_metadata['Library_ID'] == unique].reset_index(drop=True)
 	if 'Sample_Barcode' not in import_cols.keys():
 		pcr_barcode = "NONE"
 		print("ERROR: pcr_barcode doesn't exist")

@@ -28,3 +28,11 @@ abline(h = mean(merged$meanHet) + (2 * sd(merged$meanHet)), col = "RED", lty = 2
 abline(v = log10(0.03), col = "RED", lty = 2)
 abline(v = log10(0.07), col = "RED", lty = 2)
 dev.off()
+
+# output outliers
+out_csv <- data.frame(merged$FID, merged$meanHet, stringsAsFactors=FALSE)
+names(out_csv) <- c('rfid', 'heterozygosity')
+out_csv$QC_heterozygosity <- "pass"
+out_csv$QC_heterozygosity[out_csv$heterozygosity >= 0.35] <- "suspect"
+out_csv$QC_heterozygosity[out_csv$heterozygosity >= 0.4] <- "reject"
+write.table(data.frame(out_csv), paste0(out_path, '/', args[4], '_het_outliers.csv'), row.names = FALSE, sep=',' )

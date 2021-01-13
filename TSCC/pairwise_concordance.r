@@ -1,7 +1,7 @@
 library(data.table)
 library(ggplot2)
 ##################### pairwise error rate #####################
-read in arguments
+# read in arguments
 args <- commandArgs(TRUE) 
 pairwise_ERR <- read.table(args[1], strip.white=TRUE, stringsAsFactors=FALSE, sep="\t",
                             header=FALSE, colClasses=c("character", "double", "double", "character", "character"))

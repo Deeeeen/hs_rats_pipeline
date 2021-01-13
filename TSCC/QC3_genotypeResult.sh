@@ -99,7 +99,7 @@ echo "Stitch VCF -> plink Time elapsed: $(( $END - $START )) seconds"
 
 #### missing rate vs number of reads
 START=$(date +%s)
-/projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch \
+/projects/ps-palmer/software/local/src/plink2 --bfile ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch \
   --missing --out ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch
 END=$(date +%s)
 echo "Missing rate calculation Time elapsed: $(( $END - $START )) seconds"
@@ -113,10 +113,11 @@ START=$(date +%s)
 /projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch \
   --het --out ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch
 
-Rscript ${code}/pca.r \
+Rscript ${code}/het_vs_missing.r \
   ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch.smiss \
   ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch.het \
-  ${genotype_result}/stitch_result/plink
+  ${genotype_result}/stitch_result/plink/ \
+  ${vcf_prefix}_${current_date}
 
 END=$(date +%s)
 echo "Heterozygosity rate calculation Time elapsed: $(( $END - $START )) seconds"
@@ -198,7 +199,7 @@ echo "SNP density Time elapsed: $(( $END - $START )) seconds"
 START=$(date +%s)
 fs_in=$(ls ${beagle_path}/*.vcf.gz)
 /projects/ps-palmer/software/local/src/plink2 --vcf ${beagle_path}/${vcf_prefix}_${current_date}_beagle.vcf.gz \
-  --set-missing-var-ids @:# --make-bed --out ${genotype_result}/beagle_result/plink/${vcf_prefix}_beagle_${current_date}
+  --set-missing-var-ids @:# --make-bed --out ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle
 /projects/ps-palmer/software/local/src/plink2 --bfile ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle \
   --hardy --out ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle
 /projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle \
@@ -208,14 +209,14 @@ fs_in=$(ls ${beagle_path}/*.vcf.gz)
 
 source activate hs_rats
 python3 ${code}/hwe_maf.py \
-  ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle \
+  ${genotype_result}/beagle_result/plink \
   ${genotype_result}/beagle_result/beagle
 
 Rscript ${code}/pca.r \
   ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle.eigenvec \
   ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle.eigenval \
   ${out_path}/${vcf_prefix}_${current_date}_metadata.csv \
-  ${genotype_result}/beagle_result/beagle
+  ${genotype_result}/beagle_result
 conda deactivate
 END=$(date +%s)
 echo "VCF -> BED, HWE, FRQ PCA variant calling stats Time elapsed: $(( $END - $START )) seconds"

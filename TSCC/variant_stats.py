@@ -35,8 +35,8 @@ def ts_tv(chrs_num, chrs, tstv, tstv_his_out):
 
 var_stats_dir = sys.argv[1]
 base = sys.argv[2]
-SNPs_his_out = "%s-SNPs-his.pdf"%base
-tstv_his_out = "%s-tstv-plot.pdf"%base
+SNPs_his_out = "%s-SNPs-his.png"%base
+tstv_his_out = "%s-tstv-plot.png"%base
 
 SNPs = []
 chrs = []
@@ -57,4 +57,8 @@ for f in os.listdir(var_stats_dir):
 			else: chrs_num.append(int(ch[3:]))
 SNPs_his(chrs_num, chrs, SNPs, SNPs_his_out)
 ts_tv(chrs_num, chrs, tstv, tstv_his_out)
-
+chrs_num, chrs, SNPs, tstv = zip(*sorted(zip(chrs_num, chrs, SNPs, tstv)))
+pd.DataFrame({
+	'chr':chrs,
+	'num_SNPs': SNPs,
+	'ts/tv': tstv}).to_csv("%s_stats.csv"%base,index=False)

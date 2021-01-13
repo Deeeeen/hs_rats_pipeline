@@ -31,5 +31,5 @@ for(file in pedigree_files$V1){
 }
 all_pedigree<-do.call('rbind.fill', pedigree)
 # merge metadata and pedigree
-all_info <- merge(all_metadata, all_pedigree, by.x = "rfid", by.y = "rfid")
+all_info <- merge(all_metadata, all_pedigree, by.x = "rfid", by.y = "rfid", all = TRUE)
 write.table(data.frame(all_info), paste0(out_path, '/', args[1], '_metadata.csv'), row.names = FALSE, sep=',' )
