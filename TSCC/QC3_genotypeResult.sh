@@ -33,7 +33,6 @@ mkdir ${genotype_result}
 
 ####!!!!!!!!!!!!!!!!!!
 ####TO-DO: code to output log file
-####       code to plot mssing vs number of reads, 
 ####       code for brown coat color QC
 ####!!!!!!!!!!!!!!!!!!
 ########################## Combine all metadata ##############################
@@ -104,9 +103,12 @@ START=$(date +%s)
 END=$(date +%s)
 echo "Missing rate calculation Time elapsed: $(( $END - $START )) seconds"
 
-####!!!!!!!!!!!!!!!!!!
-####TO-DO: code to plot the missing rate vs. number of reads
-####!!!!!!!!!!!!!!!!!!
+temp_dir=$(echo ${dir_path} | rev | cut -d '/' -f 2- | rev)
+source activate hs_rats
+Rscript ${code}/missing_vs_reads.r \
+   ${temp_dir} \ 
+   ${dir_path} 
+conda deactivate
 
 #### heterozygosity vs missing rate
 START=$(date +%s)

@@ -100,5 +100,4 @@ chmod u+x submission.sh
 ```  
 **TO-DO**  
 - [ ] Output log file
-- [ ] Missing rate vs. # of reads
 - [ ] Brown coat color QC
