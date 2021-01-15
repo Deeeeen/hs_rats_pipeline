@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -q home
+#PBS -q hotel
 #PBS -N Demux
 #PBS -l nodes=1:ppn=4
 #PBS -l walltime=24:00:00

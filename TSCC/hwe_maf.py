@@ -70,9 +70,9 @@ for f in os.listdir(plink_dir):
 			chrom = np.append(chrom,f_frq['CHR'])
 
 base = sys.argv[2]
-hwe_his_out = "%s-hwe-his.png"%base
-hwe_maf_out = "%s-hwe-maf.png"%base
-maf_his_out = "%s-maf-his.png"%base
+hwe_his_out = "%s_hwe_his.png"%base
+hwe_maf_out = "%s_hwe_maf.png"%base
+maf_his_out = "%s_maf_his.png"%base
 
 print(len(chrom))
 print(len(p_value))

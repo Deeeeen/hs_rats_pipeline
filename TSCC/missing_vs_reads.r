@@ -4,7 +4,7 @@ library(plyr)
 # read in arguments
 args <- commandArgs(TRUE)
 dir_path <- args[1]
-flow_cell_dir_path <- args[1]
+flow_cell_dir_path <- args[2]
 all_metadata <- read.table(paste0(flow_cell_dir_path, "/results/", list.files(paste0(flow_cell_dir_path, "/results/"), pattern='*metadata.csv')[1]), stringsAsFactors=FALSE,
                         header=TRUE,  strip.white=TRUE,sep=",")
 all_metadata <- all_metadata[all_metadata$strain == "Heterogenous stock",]
@@ -28,9 +28,9 @@ for(run_id in unique(all_metadata$runid)){
 metrics <- vector("list", length(unique(all_metadata$Library_ID)))
 i<-1
 for(folder in unique(folders)){
-    metrics_files<-list.files(paste0(dir_path, folder, '/demux/metrics/'))
+    metrics_files<-list.files(paste0(dir_path, '/', folder, '/demux/metrics/'))
     for(file in metrics_files){
-        temp_metrics<-read.table(paste0(dir_path, folder, '/demux/metrics/', file), stringsAsFactors=FALSE,
+        temp_metrics<-read.table(paste0(dir_path, '/', folder, '/demux/metrics/', file), stringsAsFactors=FALSE,
                         header=TRUE,  strip.white=TRUE,sep="\t")
         temp_metrics <- temp_metrics[temp_metrics$barcode_name != "unmatched",]
         temp_metrics <- temp_metrics[c("barcode_name", "templates")]

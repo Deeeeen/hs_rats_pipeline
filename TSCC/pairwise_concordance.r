@@ -27,4 +27,4 @@ ggplot(pairwise_ERR, aes(x=concordance_rate)) +
     geom_histogram(fill="white", color="black", bins=100)+
     xlab("Concordance Rate")+
     ylab("Frequency")
-ggsave(paste0(out_path, "/concordance_rate_hstogram.png"))
+ggsave(paste0(out_path, "/concordance_rate_hstogram.png"), width = 5, height = 5, dpi = 300, units = "in")

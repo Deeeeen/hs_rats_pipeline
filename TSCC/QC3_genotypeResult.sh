@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -q hotel
 #PBS -N genotype_stat
-#PBS -l nodes=1:ppn=4
+#PBS -l nodes=1:ppn=12
 #PBS -l walltime=168:00:00
 #PBS -V
 #PBS -j oe
@@ -13,8 +13,8 @@
 #### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
-previous_flow_cells_metadata=previous_flow_cells_metadata
-pedigree_data=pedigree_data
+previous_flow_cells_metadata=$METADATA
+pedigree_data=$PEDIGREE
 
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
@@ -50,7 +50,7 @@ mkdir ${genotype_result}/stitch_result
 mkdir ${genotype_result}/stitch_result/plink
 ########### index stitch vcf files
 fs_in=$(ls ${stitch_path}/*.vcf.gz)
-ncpu=3
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
@@ -101,25 +101,27 @@ START=$(date +%s)
 /projects/ps-palmer/software/local/src/plink2 --bfile ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch \
   --missing --out ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch
 END=$(date +%s)
-echo "Missing rate calculation Time elapsed: $(( $END - $START )) seconds"
 
 temp_dir=$(echo ${dir_path} | rev | cut -d '/' -f 2- | rev)
 source activate hs_rats
 Rscript ${code}/missing_vs_reads.r \
-   ${temp_dir} \ 
+   ${temp_dir} \
    ${dir_path} 
 conda deactivate
+echo "Missing rate calculation Time elapsed: $(( $END - $START )) seconds"
 
 #### heterozygosity vs missing rate
 START=$(date +%s)
 /projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch \
   --het --out ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch
 
+source activate hs_rats
 Rscript ${code}/het_vs_missing.r \
   ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch.smiss \
   ${genotype_result}/stitch_result/plink/${vcf_prefix}_${current_date}_stitch.het \
   ${genotype_result}/stitch_result/plink/ \
   ${vcf_prefix}_${current_date}
+conda deactivate
 
 END=$(date +%s)
 echo "Heterozygosity rate calculation Time elapsed: $(( $END - $START )) seconds"
@@ -129,7 +131,7 @@ mkdir ${genotype_result}/beagle_result
 mkdir ${genotype_result}/beagle_result/plink
 ########### index beagle vcf files
 fs_in=$(ls ${beagle_path}/*.vcf.gz)
-ncpu=3
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
@@ -147,7 +149,7 @@ done
 
 ########### BEAGLE stats
 START=$(date +%s)
-ncpu=3
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!

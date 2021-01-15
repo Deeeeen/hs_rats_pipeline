@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -q condo
+#PBS -q hotel
 #PBS -N mapping_stat
-#PBS -l nodes=1:ppn=6
-#PBS -l walltime=8:00:00
+#PBS -l nodes=1:ppn=12
+#PBS -l walltime=168:00:00
 #PBS -V
 #PBS -j oe
 #PBS -k oe
@@ -62,7 +62,7 @@ do
 done
 
 ########### Uniquely mapping
-ncpu=6
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
@@ -120,7 +120,7 @@ do
   echo "create file: ${mapping_result}/mapped_${chr}"
   touch ${mapping_result}/mapped_${chr}
 done
-ncpu=6
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
@@ -170,7 +170,7 @@ do
   touch ${mapping_result}/mapped_GC_${chr}
 done
 
-ncpu=6
+ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!

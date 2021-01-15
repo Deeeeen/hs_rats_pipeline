@@ -1,7 +1,11 @@
 library(plyr)
 # read in arguments
 args <- commandArgs(TRUE) 
-metadata_files <- read.table(args[3], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
+if(file.size(args[3]) > 0){
+    metadata_files <- read.table(args[3], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
+}else{
+    metadata_files <-c()
+}
 pedigree_files <- read.table(args[4], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
 out_path <- args[5]
 # read in metadata files

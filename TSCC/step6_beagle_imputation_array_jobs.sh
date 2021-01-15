@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -q home
+#PBS -q hotel
 #PBS -N beagle
 #PBS -l nodes=1:ppn=24
 #PBS -l walltime=168:00:00

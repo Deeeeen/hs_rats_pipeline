@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -q home
+#PBS -q hotel
 #PBS -N stitch
 #PBS -l nodes=1:ppn=24
 #PBS -l walltime=100:00:00
@@ -14,7 +14,7 @@
 #### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
-previous_flow_cells_bams=previous_flow_cells_bams
+previous_flow_cells_bams=$PREV_BAMS
 
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)

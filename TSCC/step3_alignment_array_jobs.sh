@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -q home
+#PBS -q hotel
 #PBS -N mapping
 #PBS -l nodes=1:ppn=6
 #PBS -l walltime=24:00:00

@@ -5,6 +5,7 @@ import sys
 import os
 from matplotlib import use
 use('Agg')
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 
@@ -35,8 +36,8 @@ def ts_tv(chrs_num, chrs, tstv, tstv_his_out):
 
 var_stats_dir = sys.argv[1]
 base = sys.argv[2]
-SNPs_his_out = "%s-SNPs-his.png"%base
-tstv_his_out = "%s-tstv-plot.png"%base
+SNPs_his_out = "%s_SNPs_his.png"%base
+tstv_his_out = "%s_tstv_plot.png"%base
 
 SNPs = []
 chrs = []
