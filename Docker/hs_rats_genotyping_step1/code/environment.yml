@@ -1,0 +1,5 @@
+name: genotyping
+
+dependencies:
+  - python=3.9.1
+  - pandas
