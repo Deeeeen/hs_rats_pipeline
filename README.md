@@ -6,4 +6,7 @@ This [Github repository](https://github.com/Deeeeen/hs_rats_pipeline) is to docu
 ## Contents
 - **[AWS](AWS)** (under development): This folder contains Docker images and AWS configuration files for the pipeline. Docker images are separated by pipeline steps.
 - **[Docker](Docker)** (under development): This folder contains Docker images for the pipeline. Docker images are separated by pipeline steps.
-- **[TSCC](TSCC)**: This folder contains the complete pipeline code that utilizes TSCC's PBS scheduler's array jobs feature to achieve parallelization.
+- **[TSCC](TSCC)**: This folder contains the complete pipeline code that utilizes TSCC's PBS scheduler's array jobs feature to achieve parallelization.  
+
+## Pipeline Overview
+![alt text](pipeline_overview)
