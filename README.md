@@ -9,4 +9,4 @@ This [Github repository](https://github.com/Deeeeen/hs_rats_pipeline) is to docu
 - **[TSCC](TSCC)**: This folder contains the complete pipeline code that utilizes TSCC's PBS scheduler's array jobs feature to achieve parallelization.  
 
 ## Pipeline Overview
-![alt text](pipeline_overview)
+![alt text](pipeline_overview.png)
