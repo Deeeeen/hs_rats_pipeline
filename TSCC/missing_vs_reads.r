@@ -51,3 +51,7 @@ ggplot(all_info, aes(x=reads,y=F_MISS)) +
     ylab("Missing Rate") 
     # +theme(legend.position="none")
 ggsave(paste0(flow_cell_dir_path, "/results/genotype_result/stitch_result/plink/missing_vs_reads.png"), width = 5, height = 5, dpi = 300, units = "in")
+
+#### Output missing rate > 0.1 as outliers 
+out_csv <- all_info[all_info$F_MISS > 0.1, ]
+write.table(data.frame(out_csv), paste0(flow_cell_dir_path, '/results/genotype_result/stitch_result/plink/missing_rate_outliers.csv'), row.names = FALSE, sep=',' )

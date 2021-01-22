@@ -101,3 +101,9 @@ ggplot(metadata,aes(x=library_name,y=uniq_mapped_proportion)) +
     xlab("Library names") +
     ylab("Uniquely mapped / Examined") #+ theme(legend.position="none")
 ggsave(paste0(args[4],"/uniq_mapped_box.png"), width = 5, height = 5, dpi = 300, units = "in")
+
+#### Output mapped_read_pairs < 1M as outliers 
+out_csv <- subset(metadata, select = c(rfid, mapped_read_pairs))
+out_csv$QC_reads <- "pass"
+out_csv$QC_reads[out_csv$heterozygosity >= 1] <- "reject"
+write.table(data.frame(out_csv), paste0(args[4], '/mapped_reads_1M_outliers.csv'), row.names = FALSE, sep=',' )

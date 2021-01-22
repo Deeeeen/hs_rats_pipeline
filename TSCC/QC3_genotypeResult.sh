@@ -234,10 +234,20 @@ source activate hs_rats
 Rscript ${code}/coat_color_albino.r \
   ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle_albino_1_151097606.ped \
   ${out_path}/${vcf_prefix}_${current_date}_metadata.csv \
-  ${out_path}/${vcf_prefix}_${current_date}
+  ${genotype_result}/beagle_result/plink
 conda deactivate
 END=$(date +%s)
 echo "Albino coat color QC Time elapsed: $(( $END - $START )) seconds"
+
+#### Brown coat color QC based on chr3:150285633​ chr3:150288295​ chr3:150432118​ 
+#### chr3:150449245​ chr3:150488934​ chr3:150530733​ chr3:150574499​ chr3:150584522
+START=$(date +%s)
+/projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/beagle_result/plink/hs_rats_n1912_01082021_beagle \
+  --alleleACGT --snps 3:150285633, 3:150288295, 3:150432118, 3:150449245, 3:150488934, 3:150530733, 3:150584522\
+  --recode  --out ${genotype_result}/beagle_result/plink/hs_rats_n1912_01082021_beagle_brown
+
+END=$(date +%s)
+echo "Brown coat color QC Time elapsed: $(( $END - $START )) seconds"
 
 #### Pairwise concordance check
 START=$(date +%s)

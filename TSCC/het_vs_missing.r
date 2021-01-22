@@ -35,4 +35,4 @@ names(out_csv) <- c('rfid', 'heterozygosity')
 out_csv$QC_heterozygosity <- "pass"
 out_csv$QC_heterozygosity[out_csv$heterozygosity >= 0.35] <- "suspect"
 out_csv$QC_heterozygosity[out_csv$heterozygosity >= 0.4] <- "reject"
-write.table(data.frame(out_csv), paste0(out_path, '/', args[4], '_het_outliers.csv'), row.names = FALSE, sep=',' )
+write.table(data.frame(out_csv), paste0(out_path, '/het_rate_outliers.csv'), row.names = FALSE, sep=',' )

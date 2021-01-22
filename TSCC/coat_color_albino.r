@@ -1,4 +1,4 @@
-library("data.table")
+library(data.table)
 ############ ALBINO ############
 # read in arguments
 args <- commandArgs(TRUE) 
@@ -14,8 +14,8 @@ ped$rfid<-toupper(ped$rfid)
 metadata$rfid <- as.character(metadata$rfid)
 metadata$rfid <- toupper(metadata$rfid)
 all=merge(ped,metadata,by="rfid",all=F)
-albino<-all[which(all$coatcolor=="ALBINO"),]
 
+albino<-all[which(all$coatcolor=="ALBINO"),]
 # flag samples
 # these should be flagged
 hets_which_should_not_be_albino<-albino[which(albino$GT=="TC"),]
@@ -24,4 +24,9 @@ non_albino<-all[which(!all$coatcolor=="ALBINO"),]
 # these should also be flagged
 homo_which_should_be_albino<-non_albino[which(non_albino$GT=="TT"),]
 flagged<-do.call("rbind", list(hets_which_should_not_be_albino, homo_which_should_be_albino))
-write.table( data.frame(flagged), paste0(out_path, '_albino_outliers.csv'), row.names = FALSE, sep=',' )
+
+# output outliers
+out_csv <- subset(all, select = c(rfid, GT, coatcolor))
+out_csv$QC_coat_color_albino <- "pass"
+out_csv$QC_coat_color_albino[out_csv$rfid %in% flagged$rfid] <- "reject"
+write.table(data.frame(out_csv), paste0(out_path, '/coat_color_albino_outliers.csv'), row.names = FALSE, sep=',' )
