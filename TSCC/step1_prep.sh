@@ -1,16 +1,4 @@
 #!/bin/bash
-#PBS -q condo
-#PBS -N preDemux
-#PBS -l nodes=1:ppn=2
-#PBS -l walltime=8:00:00
-#PBS -V
-#PBS -j oe
-#PBS -k oe
-#PBS -M dec037@health.ucsd.edu
-#PBS -m ae
-
-#### Make sure to change the compute node, job name, num of node,
-#### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
@@ -95,7 +83,7 @@ fi
 #### several small sample sheets by combination of "pcr_barcode", "library",
 #### and "full_run_id"
 #### !!!!!!!!!!!!!!!!!!!!!!
-#### The following part needs modifications
+#### The ${code}/separate_metadata.py probably needs modifications
 #### since original sample sheet always
 #### comes in with DIFFERENT format.
 #### !!!!!!!!!!!!!!!!!!!!!!

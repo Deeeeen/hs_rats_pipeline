@@ -1,16 +1,4 @@
 #!/bin/bash
-#PBS -q hotel
-#PBS -N genotype_stat
-#PBS -l nodes=1:ppn=12
-#PBS -l walltime=168:00:00
-#PBS -V
-#PBS -j oe
-#PBS -k oe
-#PBS -M dec037@health.ucsd.edu
-#PBS -m ae
-
-#### Make sure to change the compute node, job name, num of node,
-#### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
 previous_flow_cells_metadata=$METADATA
@@ -244,8 +232,14 @@ echo "Albino coat color QC Time elapsed: $(( $END - $START )) seconds"
 START=$(date +%s)
 /projects/ps-palmer/software/local/src/plink-1.90/plink --bfile ${genotype_result}/beagle_result/plink/hs_rats_n1912_01082021_beagle \
   --alleleACGT --snps 3:150285633, 3:150288295, 3:150432118, 3:150449245, 3:150488934, 3:150530733, 3:150584522\
-  --recode  --out ${genotype_result}/beagle_result/plink/hs_rats_n1912_01082021_beagle_brown
+  --recode  --out ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle_brown
 
+source activate hs_rats
+Rscript ${code}/coat_color_brown.r \
+  ${genotype_result}/beagle_result/plink/${vcf_prefix}_${current_date}_beagle_brown.ped \
+  ${out_path}/${vcf_prefix}_${current_date}_metadata.csv \
+  ${genotype_result}/beagle_result/plink
+conda deactivate
 END=$(date +%s)
 echo "Brown coat color QC Time elapsed: $(( $END - $START )) seconds"
 
@@ -266,3 +260,4 @@ Rscript ${code}/pairwise_concordance.r \
 conda deactivate
 END=$(date +%s)
 echo "Pairwise concordance check Time elapsed: $(( $END - $START )) seconds"
+

@@ -1,17 +1,4 @@
 #!/bin/bash
-#PBS -q hotel
-#PBS -N stitch
-#PBS -l nodes=1:ppn=24
-#PBS -l walltime=100:00:00
-#PBS -t 1-22%4
-#PBS -V
-#PBS -j oe
-#PBS -k oe
-#PBS -M dec037@health.ucsd.edu
-#PBS -m ae
-
-#### Make sure to change the compute node, job name, num of node,
-#### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
 previous_flow_cells_bams=$PREV_BAMS

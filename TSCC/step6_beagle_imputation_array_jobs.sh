@@ -1,17 +1,4 @@
 #!/bin/bash
-#PBS -q hotel
-#PBS -N beagle
-#PBS -l nodes=1:ppn=24
-#PBS -l walltime=168:00:00
-#PBS -t 1-21%2
-#PBS -V
-#PBS -j oe
-#PBS -k oe
-#PBS -M dec037@health.ucsd.edu
-#PBS -m ae
-
-#### Make sure to change the compute node, job name, num of node,
-#### ppn, walltime, forward email address for notifications. (above)
 
 pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})

@@ -1,21 +1,4 @@
 #!/bin/bash
-#PBS -q hotel
-#PBS -N mapping
-#PBS -l nodes=1:ppn=6
-#PBS -l walltime=24:00:00
-#PBS -t 1-24%5
-#PBS -V
-#PBS -j oe
-#PBS -k oe
-#PBS -M dec037@health.ucsd.edu
-#PBS -m ae
-
-#### Make sure to change the compute node, job name, num of node,
-#### ppn, walltime, forward email address for notifications. (above)
-#### !!!!!!!!!!!!!!!!!!!!!!
-#### Number of array jobs needs modifications.
-#### Here we have 24 array jobs
-#### !!!!!!!!!!!!!!!!!!!!!!
 
 pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
