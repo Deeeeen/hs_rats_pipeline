@@ -8,6 +8,7 @@ dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 reference_panels=$(head -n 6 ${pipeline_arguments} | tail -n 1)
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 bams_data=${dir_path}/bams
+stitch_path=${dir_path}/stitch
 more_bam=$(awk "{print;}" ${previous_flow_cells_bams})
 #### read in arguments for the pipeline
 
@@ -19,7 +20,7 @@ START=$(date +%s)
 source activate stitch  
 Rscript ${code}/variant_calling_STITCH.r \
     ${PBS_ARRAYID} \
-    ${dir_path}/stitch \
+    ${stitch_path} \
     ${reference_panels} \
     ${bams_data} \
     ${more_bam}

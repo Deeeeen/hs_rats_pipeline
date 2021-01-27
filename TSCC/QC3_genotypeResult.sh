@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
-previous_flow_cells_metadata=$METADATA
-pedigree_data=$PEDIGREE
+pipeline_arguments=${ARG}
+previous_flow_cells_metadata=${METADATA}
+pedigree_data=${PEDIGREE}
 
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
@@ -122,9 +122,9 @@ ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
-for f in $fs_in
+for f in ${fs_in}
 do
-    while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+    while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
    done
    sleep 5
@@ -142,9 +142,9 @@ ncpu=12
 #### !!!!!!!!!!!!!!!!!!!!!!
 fs_in=$(ls ${beagle_path}/*.vcf.gz)
 cnt=0
-for f in $fs_in
+for f in ${fs_in}
 do
-    while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+    while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
    done
    sleep 5

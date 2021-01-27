@@ -23,7 +23,7 @@ if [ -f "${beagle_path}/chr${ch}_hs_bgl.vcf.gz" ]; then
     rm ${beagle_path}/chr${ch}_hs_bgl*
 fi
 
-java -Xss200M -Xmx100G -XX:+AggressiveOpts -XX:+AggressiveHeap \
+/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64/bin/java -Xss200M -Xmx100G -XX:+AggressiveOpts -XX:+AggressiveHeap \
     -jar /home/dec037/applications/beagle.27Jan18.7e1.jar \
     gt=${stitch_path}/chr${ch}_hs_stitch.vcf.gz \
     gprobs=true \

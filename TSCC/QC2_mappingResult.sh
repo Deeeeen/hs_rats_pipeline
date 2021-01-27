@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
+pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
