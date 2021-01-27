@@ -1,16 +1,16 @@
 library(plyr)
 # read in arguments
 args <- commandArgs(TRUE) 
-if(file.size(args[3]) > 0){
-    metadata_files <- read.table(args[3], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
+if(file.size(args[2]) > 0){
+    metadata_files <- read.table(args[2], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
 }else{
     metadata_files <-c()
 }
-pedigree_files <- read.table(args[4], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
-out_path <- args[5]
+pedigree_files <- read.table(args[3], strip.white=TRUE, stringsAsFactors=FALSE, header=FALSE)
+out_path <- args[4]
 # read in metadata files
 metadata <- vector("list", length(metadata_files)+1)
-temp_metadata <- read.table(args[2], stringsAsFactors=FALSE,
+temp_metadata <- read.table(args[1], stringsAsFactors=FALSE,
                         header=TRUE,  strip.white=TRUE,sep=",")
 temp_metadata <- temp_metadata[temp_metadata$strain=="Heterogenous stock",]
 metadata[[1]] <- data.frame(temp_metadata)
@@ -36,4 +36,5 @@ for(file in pedigree_files$V1){
 all_pedigree<-do.call('rbind.fill', pedigree)
 # merge metadata and pedigree
 all_info <- merge(all_metadata, all_pedigree, by.x = "rfid", by.y = "rfid", all = TRUE)
-write.table(data.frame(all_info), paste0(out_path, '/', args[1], '_metadata.csv'), row.names = FALSE, sep=',' )
+metadata_prefix <- paste0("hs_rats_n", length(all_info$rfid), "_", format(Sys.Date(), "%m%d%Y"))
+write.table(data.frame(all_info), paste0(out_path, '/', metadata_prefix, '_metadata.csv'), row.names = FALSE, sep=',' )

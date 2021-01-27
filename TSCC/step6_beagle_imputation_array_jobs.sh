@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
+pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 genetic_map=$(head -n 7 ${pipeline_arguments} | tail -n 1)
@@ -27,8 +27,8 @@ java -Xss200M -Xmx100G -XX:+AggressiveOpts -XX:+AggressiveHeap \
     -jar /home/dec037/applications/beagle.27Jan18.7e1.jar \
     gt=${stitch_path}/chr${ch}_hs_stitch.vcf.gz \
     gprobs=true \
-    ne=150 \
-    nthreads=24 \
+    ne=${ne} \
+    nthreads=${ppn} \
     map=${genetic_map}/chr${ch}_beagle.map \
     out=${beagle_path}/chr${ch}_hs_bgl
 

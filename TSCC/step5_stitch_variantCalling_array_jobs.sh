@@ -1,7 +1,7 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
-previous_flow_cells_bams=$PREV_BAMS
+pipeline_arguments=${ARG}
+previous_flow_cells_bams=${PREV_BAMS}
 
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
@@ -18,7 +18,7 @@ START=$(date +%s)
 
 source activate stitch  
 Rscript ${code}/variant_calling_STITCH.r \
-    $PBS_ARRAYID \
+    ${PBS_ARRAYID} \
     ${dir_path}/stitch \
     ${reference_panels} \
     ${bams_data} \

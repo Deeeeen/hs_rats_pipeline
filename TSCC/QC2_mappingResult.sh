@@ -4,7 +4,7 @@ pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
-original_sample_sheet=$(head -n 3 ${pipeline_arguments} | tail -n 1)
+sample_sheet=${dir_path}/demux/sample_sheet.csv
 reference_data=$(head -n 5 ${pipeline_arguments} | tail -n 1)
 bams_path=${dir_path}/bams
 out_path=${dir_path}/results
@@ -19,7 +19,7 @@ mkdir ${demux_result}
 source activate hs_rats
 Rscript ${code}/demuxed_reads.r \
    ${dir_path}/demux/metrics \
-   ${original_sample_sheet} \
+   ${sample_sheet} \
    ${demux_result}
 conda deactivate
 
@@ -50,7 +50,7 @@ do
 done
 
 ########### Uniquely mapping
-ncpu=12
+ncpu=${ppn}
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
@@ -64,9 +64,9 @@ touch ${mapping_result}/uniq_mapped
 
 cnt=0
 fs_in=$(ls ${bams_path}/*_mkDup.bam)
-for f in $fs_in
+for f in ${fs_in}
 do
-   while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+   while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
    done
    sleep 5
@@ -76,7 +76,7 @@ do
    fi
    sample=$(echo ${f} | rev | cut -d '/' -f 1 | rev | cut -d '-' -f 1)
    content=$(/projects/ps-palmer/software/local/src/samtools-1.10/samtools view -c -q 40 $f)
-   echo -e "$sample\t$content" >> ${mapping_result}/uniq_mapped
+   echo -e "${sample}\t${content}" >> ${mapping_result}/uniq_mapped
 done
 
 while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
@@ -88,7 +88,7 @@ echo "Uniquely mapping Time elapsed: $(( $END - $START )) seconds"
 ########### mapping stats plot Rscript
 source activate hs_rats
 Rscript ${code}/mapped_reads.r \
-   ${original_sample_sheet} \
+   ${sample_sheet} \
    ${mapping_result}/mkDup_metrics \
    ${mapping_result}/uniq_mapped \
    ${mapping_result}
@@ -108,13 +108,13 @@ do
   echo "create file: ${mapping_result}/mapped_${chr}"
   touch ${mapping_result}/mapped_${chr}
 done
-ncpu=12
+ncpu=${ppn}
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
 for f in ${fs_in}
 do
-  while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+  while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
   done
   sleep 5
@@ -126,7 +126,7 @@ do
   for chr in ${chrs[@]}
   do
     temp_reads=$(awk -v chr=$chr '{if ($1 == chr) print $2;}' ${fn}.readCount)
-    echo "$sampleName $temp_reads $sum_reads" >> ${mapping_result}/mapped_${chr}
+    echo "${sampleName} ${temp_reads} ${sum_reads}" >> ${mapping_result}/mapped_${chr}
   done
   rm ${fn}.readCount
 done
@@ -140,7 +140,7 @@ echo "Mapping stats on each chr time elapsed: $(( $END - $START )) seconds"
 source activate hs_rats
 Rscript ${code}/mapped_reads_chr.r \
    ${mapping_result} \
-   ${original_sample_sheet} \
+   ${sample_sheet} \
    ${mapping_result}
 conda deactivate 
 
@@ -158,14 +158,14 @@ do
   touch ${mapping_result}/mapped_GC_${chr}
 done
 
-ncpu=12
+ncpu=${ppn}
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
 module load bedtools
 for f in ${fs_in}
 do
-  while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+  while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
   done
   sleep 5
@@ -177,7 +177,7 @@ do
   for chr in ${chrs[@]}
   do
     gc_content=$(awk -v chr=$chr '{if ($1 == chr) {num_C=num_C+$10; num_G=num_G+$11; sum=sum+$15;}} END {print num_C,num_G,sum}' ${fn}.nuc)
-    echo "$sampleName $gc_content" >> ${mapping_result}/mapped_GC_${chr}
+    echo "${sampleName} ${gc_content}" >> ${mapping_result}/mapped_GC_${chr}
   done
   rm ${fn}.bed
   rm ${fn}.nuc
@@ -193,6 +193,6 @@ echo "GC content stats on each chr time elapsed: $(( $END - $START )) seconds"
 source activate hs_rats
 Rscript ${code}/mapped_GC_chr.r \
    ${mapping_result} \
-   ${original_sample_sheet} \
+   ${sample_sheet} \
    ${mapping_result}
 conda deactivate

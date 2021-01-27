@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
+pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 fastq_dir=$(head -n 4 ${pipeline_arguments} | tail -n 1)
@@ -24,20 +24,20 @@ pre_demux_fastq_R2=$(cut -d ';' -f2 <<< ${pre_demux_fastqs} | sed 's/^ *//g')
 metrics_name=$(echo ${sample_sheet} | rev | cut -d '/' -f1 | rev | cut -d '.' -f1)
 
 echo "\n-----run demux on ${fastq_dir}/${flow_cell}/${pre_demux_fastq_R1} with ${sample_sheet}-----"
-ncpu=4
+ncpu=${ppn}
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### Use the path where you keep fgbio after flag -jar
 #### -Xmx40G memory request for JVM
-java -Xmx40G -XX:+AggressiveOpts -XX:+AggressiveHeap \
+/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64/bin/java -Xmx40G -XX:+AggressiveOpts -XX:+AggressiveHeap \
      -jar /projects/ps-palmer/software/local/src/fgbio-1.2.0/fgbio-1.2.0.jar DemuxFastqs \
      --inputs ${fastq_dir}/${flow_cell}/${pre_demux_fastq_R1} \
               ${fastq_dir}/${flow_cell}/${pre_demux_fastq_R2} \
      --metadata ${sample_sheet} \
      --read-structures 8B12M+T 8M+T \
      --output-type=Fastq \
-     --threads $ncpu \
+     --threads ${ncpu} \
      --output ${dir_path}/demux/fastq \
      --metrics ${dir_path}/demux/metrics/${metrics_name}_demux_barcode_metrics.txt
 

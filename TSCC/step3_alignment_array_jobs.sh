@@ -1,11 +1,12 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
+pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 reference_data=$(head -n 5 ${pipeline_arguments} | tail -n 1)
 sample_sheet=${dir_path}/demux/sample_sheet.csv
 demux_data=${dir_path}/demux/fastq
+mapped_data=${dir_path}/sams
 #### read in arguments for the pipeline
 
 cd ${home}
@@ -14,20 +15,17 @@ cd ${home}
 START=$(date +%s)
 #### find all demuxed fastq.gz files and construct a list of their prefix
 #### organize a group of fastq.gz files for this array job to process
-#### !!!!!!!!!!!!!!!!!!!!!!
-#### May need to change the number 24 based on the number of array jobs requested
-#### !!!!!!!!!!!!!!!!!!!!!!
 sample_IDs=$(awk -F ',' 'NR>1 {print $1}' ${sample_sheet})
 num_sample=$(awk -F ',' 'NR>1 {print $1}' ${sample_sheet} | wc -l)
-((num_sample_temp=num_sample/24+1,temp_sample_end=num_sample_temp*PBS_ARRAYID))
+((num_sample_temp=num_sample/num_jobs+1,temp_sample_end=num_sample_temp*PBS_ARRAYID))
 if [[ ${temp_sample_end} -gt ${num_sample} ]]; then
   ((num_sample_temp=num_sample_temp-(temp_sample_end-num_sample)))
   if [[ ${num_sample_temp} -le 0 ]]; then
       exit 0
   fi
-  sample_temp=$(echo "${sample_IDs}" | head -$temp_sample_end | tail -$num_sample_temp)
+  sample_temp=$(echo "${sample_IDs}" | head -${temp_sample_end} | tail -${num_sample_temp})
 else
-  sample_temp=$(echo "${sample_IDs}" | head -$temp_sample_end | tail -$num_sample_temp)
+  sample_temp=$(echo "${sample_IDs}" | head -${temp_sample_end} | tail -${num_sample_temp})
 fi
 
 #### a customized command to extract the header of the fastq.gz file
@@ -45,17 +43,13 @@ for line in gzf:
     numLines += 1
 EOF
 )
-zhead() { python -c "$zhead_py" "$@"; }
+zhead() { python -c "${zhead_py}" "$@"; }
 
-ncpu=3
-#### !!!!!!!!!!!!!!!!!!!!!!
-#### May need to change the ncpu based on the ppn requested
-#### the -t flag on bwa mem command specifies the number of threads
-#### !!!!!!!!!!!!!!!!!!!!!!
+((ncpu=ppn/2))
 cnt=0
 for sample in ${sample_temp}
 do
-  while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+  while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
     sleep 60
   done
   sleep 5
@@ -63,18 +57,18 @@ do
   #### construct the register group for bwa
   fastq_prefix=$(ls ${demux_data}/${sample}*_R1.fastq.gz | rev | cut -d'/' -f 1 | rev | cut -d '_' -f 1)
   fastq_header=$(zhead ${demux_data}/${fastq_prefix}_R1.fastq.gz 1)
-  instrument_name=$(cut -d ':' -f 1 <<< $fastq_header | cut -d '@' -f 2)
-  run_id=$(cut -d ':' -f 2 <<< $fastq_header)
-  flowcell_id=$(cut -d ':' -f 3 <<< $fastq_header)
-  flowcell_lane=$(cut -d ':' -f 4 <<< $fastq_header)
-  library_id=$(grep -w "^${sample}" $sample_sheet | cut -d ',' -f 3)
-  sample_barcode=$(cut -d '-' -f 3 <<< $fastq_prefix)
+  instrument_name=$(cut -d ':' -f 1 <<< ${fastq_header} | cut -d '@' -f 2)
+  run_id=$(cut -d ':' -f 2 <<< ${fastq_header})
+  flowcell_id=$(cut -d ':' -f 3 <<< ${fastq_header})
+  flowcell_lane=$(cut -d ':' -f 4 <<< ${fastq_header})
+  library_id=$(grep -w "^${sample}" ${sample_sheet} | cut -d ',' -f 3)
+  sample_barcode=$(cut -d '-' -f 3 <<< ${fastq_prefix})
 
-  echo -e "\n-----run ${cnt}-th file: ${demux_data}/${fastq_prefix} > ${dir_path}/sams/${fastq_prefix}.sam-----"
+  echo -e "\n-----run ${cnt}-th file: ${demux_data}/${fastq_prefix} > ${mapped_data}/${fastq_prefix}.sam-----"
   /projects/ps-palmer/software/local/src/bwa-0.7.12/bwa mem -aM -t 2\
   -R "@RG\tID:${instrument_name}.${run_id}.${flowcell_id}.${flowcell_lane}\tLB:${library_id}\tPL:ILLUMINA\tSM:${sample}\tPU:${flowcell_id}.${flowcell_lane}.${sample_barcode}" \
   ${reference_data} ${demux_data}/${fastq_prefix}_R1.fastq.gz \
-  ${demux_data}/${fastq_prefix}_R2.fastq.gz > ${dir_path}/sams/${fastq_prefix}.sam &
+  ${demux_data}/${fastq_prefix}_R2.fastq.gz > ${mapped_data}/${fastq_prefix}.sam &
 done
 
 while [ "$(jobs -rp | wc -l)" -gt 0 ]; do

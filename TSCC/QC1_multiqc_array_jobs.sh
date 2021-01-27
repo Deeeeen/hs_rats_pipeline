@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pipeline_arguments=$ARG
+pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 demux_data=${dir_path}/demux/fastq
@@ -28,14 +28,14 @@ mkdir ${out_path}/picard
 
 ########################## FastQC, Qualimap, MultiQC ###########################
 START=$(date +%s)
-ncpu=6
+ncpu=${ppn}
 #### !!!!!!!!!!!!!!!!!!!!!!
 #### May need to change the ncpu based on the ppn requested
 #### !!!!!!!!!!!!!!!!!!!!!!
 cnt=0
 for sample in ${samples[@]}
 do
-   while [ "$(jobs -rp | wc -l)" -ge $ncpu ]; do
+   while [ "$(jobs -rp | wc -l)" -ge ${ncpu} ]; do
       sleep 60
    done
    sleep 5
@@ -44,16 +44,16 @@ do
    fastqs=$(ls ${demux_data}/${sample}*.fastq.gz)
    for f in ${fastqs}
    do
-    echo -e "\n-----run FastQC on ${cnt}-th file: $f-----"
-    /projects/ps-palmer/software/local/src/FastQC/fastqc $f --outdir=${out_path}/fastqc_demux/ &
+    echo -e "\n-----run FastQC on ${cnt}-th file: ${f}-----"
+    /projects/ps-palmer/software/local/src/FastQC/fastqc ${f} --outdir=${out_path}/fastqc_demux/ &
    done
    #### FastQC
 
    bams=$(ls ${bams_data}/${sample}*_sorted_mkDup.bam)
    for f in ${bams}
    do
-    echo -e "\n-----run Qualimap on ${cnt}-th file: $f-----"
-    /projects/ps-palmer/software/local/src/qualimap_v2.2.1/qualimap bamqc -bam $f -outdir ${out_path}/qualimap/${sample}
+    echo -e "\n-----run Qualimap on ${cnt}-th file: ${f}-----"
+    /projects/ps-palmer/software/local/src/qualimap_v2.2.1/qualimap bamqc -bam ${f} -outdir ${out_path}/qualimap/${sample}
    done
    #### Qualimap
 
