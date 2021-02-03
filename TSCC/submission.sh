@@ -115,7 +115,7 @@ STEP6_BEAGLE_JOB_ARR_id=$(echo "${STEP6_BEAGLE_JOB_ARR}" | cut -d '.' -f 1 )
 #### !!!!!!!!!!!!!!!!!!!!!!
 ppn=6
 num_jobs=$(num_lib ${current_metadata})
-QC1_MULTIQC_JOB=$(qsub -q condo -N qc -l nodes=1:ppn=${ppn},walltime=8:00:00 -t 1-${num_jobs} \
+QC1_MULTIQC_JOB=$(qsub -q home -N qc -l nodes=1:ppn=${ppn},walltime=8:00:00 -t 1-${num_jobs} \
                        -j oe -k oe -m ae -M ${email} \
                        -V -v ARG="${ARG}",ppn="${ppn}" \
                        -W depend=afterokarray:${STEP4_MKDUP_JOB_ARR_id} \

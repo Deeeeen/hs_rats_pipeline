@@ -58,6 +58,12 @@ START=$(date +%s)
 fs_in=$(ls ${stitch_path}/*.vcf.gz)
 /projects/ps-palmer/software/local/src/bcftools-1.10.2/bcftools concat \
   --no-version -a -d none -O z -o ${stitch_path}/${vcf_prefix}_stitch.vcf.gz ${fs_in}
+/projects/ps-palmer/software/local/src/plink2 --vcf ${stitch_path}/${vcf_prefix}_stitch.vcf.gz \
+  --set-missing-var-ids @:# --recode vcf --out ${stitch_path}/${vcf_prefix}_stitch
+rm ${stitch_path}/${vcf_prefix}_stitch.vcf.gz
+module load bcftools
+bgzip -c ${stitch_path}/${vcf_prefix}_stitch.vcf > ${stitch_path}/${vcf_prefix}_stitch.vcf.gz
+module unload bcftools
 END=$(date +%s)
 echo "Concat stitch vcfs Time elapsed: $(( $END - $START )) seconds"
 
@@ -169,15 +175,17 @@ START=$(date +%s)
 fs_in=$(ls ${beagle_path}/*.vcf.gz)
 /projects/ps-palmer/software/local/src/bcftools-1.10.2/bcftools concat \
   --no-version -a -d none -O z -o ${beagle_path}/${vcf_prefix}_beagle.vcf.gz ${fs_in}
+/projects/ps-palmer/software/local/src/plink2 --vcf ${beagle_path}/${vcf_prefix}_stitch.vcf.gz \
+  --set-missing-var-ids @:# --recode vcf --out ${beagle_path}/${vcf_prefix}_stitch
+rm ${beagle_path}/${vcf_prefix}_stitch.vcf.gz
+module load bcftools
+bgzip -c ${beagle_path}/${vcf_prefix}_stitch.vcf > ${beagle_path}/${vcf_prefix}_stitch.vcf.gz
+module unload bcftools
 END=$(date +%s)
 echo "Concat beagle vcfs Time elapsed: $(( $END - $START )) seconds"
 
 #### SNP density
 START=$(date +%s)
-module load bcftools
-bgzip -d -c ${beagle_path}/${vcf_prefix}_beagle.vcf.gz > ${beagle_path}/${vcf_prefix}_beagle.vcf
-module unload bcftools
-
 source activate hs_rats
 python3 ${code}/snp_density.py -b 1000 \
     -i ${beagle_path}/${vcf_prefix}_beagle.vcf \

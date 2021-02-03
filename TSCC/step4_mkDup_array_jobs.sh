@@ -140,6 +140,6 @@ do
       rm ${mapped_data}/${sam_prefix}.sam
       rm ${bams_data}/${sam_prefix}_sorted.bam
    else
-      echo -e "ERROR: something went wrong during SAM->BAM, BAM->sorted_BAM, or sorted_BAM->sorted_mkDup_BAM fro ${sam_prefix}"
+      echo -e "ERROR: something went wrong during SAM->BAM, BAM->sorted_BAM, or sorted_BAM->sorted_mkDup_BAM for ${sam_prefix}"
    fi
 done

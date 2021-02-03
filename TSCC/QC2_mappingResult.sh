@@ -134,15 +134,15 @@ while [ "$(jobs -rp | wc -l)" -gt 0 ]; do
    sleep 60 
 done
 
-END=$(date +%s)
-echo "Mapping stats on each chr time elapsed: $(( $END - $START )) seconds"
-
 source activate hs_rats
 Rscript ${code}/mapped_reads_chr.r \
    ${mapping_result} \
    ${sample_sheet} \
    ${mapping_result}
 conda deactivate 
+
+END=$(date +%s)
+echo "Mapping stats on each chr time elapsed: $(( $END - $START )) seconds"
 
 ########## mapped reads GC content on each chromosome
 START=$(date +%s)
