@@ -3,6 +3,7 @@
 pipeline_arguments=${ARG}
 home=$(head -n 1 ${pipeline_arguments})
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
+code=${code}/quality_control/util
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 sample_sheet=${dir_path}/demux/sample_sheet.csv
 reference_data=$(head -n 5 ${pipeline_arguments} | tail -n 1)

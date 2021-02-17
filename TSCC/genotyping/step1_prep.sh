@@ -4,6 +4,7 @@ pipeline_arguments=$ARG
 home=$(head -n 1 ${pipeline_arguments})
 dir_path=$(head -n 2 ${pipeline_arguments} | tail -n 1)
 code=$(head -n 8 ${pipeline_arguments} | tail -n 1)
+code=${code}/genotyping/util
 original_sample_sheet=$(head -n 3 ${pipeline_arguments} | tail -n 1)
 #### read in arguments for the pipeline
 
