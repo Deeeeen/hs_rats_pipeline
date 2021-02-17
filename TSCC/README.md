@@ -34,11 +34,12 @@ Paths to all flow cells' pedigree data.
 ## Documentation  
 ### Before running the pipeline on TSCC:
 Please update the following files to suit your purpose:  
-1. [pipeline_arguments](pipeline_arguments)
-2. [previous_flow_cells_metadata](previous_flow_cells_metadata)
-3. [previous_flow_cells_bams](previous_flow_cells_bams)
-4. [pedigree_data](pedigree_data)
-5. Update the PBS Torque arguments and the corresponding file locations on [submission.sh](submission.sh).  
+1. Follow the instruction in [software](software) to install required software
+2. [pipeline_arguments](pipeline_arguments)
+3. [previous_flow_cells_metadata](previous_flow_cells_metadata)
+4. [previous_flow_cells_bams](previous_flow_cells_bams)
+5. [pedigree_data](pedigree_data)
+6. Update the PBS Torque arguments and the corresponding file locations on [submission.sh](submission.sh).  
 
 ### Run the pipeline on TSCC:
 1. Change the permission of the submission script
